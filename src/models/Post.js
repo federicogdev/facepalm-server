@@ -15,9 +15,9 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
-  likes: [{ types: Schema.Types.ObjectId, ref: "User" }],
-  agrees: [{ types: Schema.Types.ObjectId, ref: "User" }],
-  deserves: [{ types: Schema.Types.ObjectId, ref: "User" }],
+  likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  agrees: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  deserves: [{ type: Schema.Types.ObjectId, ref: "User" }],
   comments: [
     {
       text: { type: String, required: true },

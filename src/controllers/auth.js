@@ -1,0 +1,43 @@
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const User = mongoose.model("User");
+
+exports.register = async (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!username) {
+    return res.status(400).send({ error: "Username is required." });
+  }
+
+  if (!email) {
+    return res.status(400).send({ error: "Email is required." });
+  }
+
+  if (!password || password.lenght < 6) {
+    return res
+      .status(400)
+      .send({ error: "Password should be at least 6 characters long." });
+  }
+
+  let userbyEmail = await User.findOne({ email });
+
+  if (userbyEmail) {
+    return res.status(400).send({ error: "Email is already in use" });
+  }
+
+  try {
+    const user = new User({ username, email, password });
+
+    await user.save();
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWTSECRET);
+    const responseUser = await User.findById(user._id).select("-password");
+
+    res.send({
+      token,
+      user: responseUser,
+    });
+  } catch (error) {
+    return res.status(422).send({ error: "Server error" });
+  }
+};

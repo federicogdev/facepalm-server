@@ -1,3 +1,5 @@
+require("./src/models/User.js");
+require("./src/models/Post.js");
 require("dotenv").config();
 
 const mongoose = require("mongoose");
@@ -25,5 +27,7 @@ mongoose
   })
   .then(() => console.log("DB connected"))
   .catch((err) => console.log("DB Connection Error", err));
+
+app.use("/api/v1/auth", require("./src/routes/auth"));
 
 http.listen(PORT, () => console.log(`Listening on port ${PORT}`));
