@@ -41,3 +41,31 @@ exports.register = async (req, res) => {
     return res.status(422).send({ error: "Server error" });
   }
 };
+
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email) {
+    return res.status(400).send({ error: "Email is required." });
+  }
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(422).send({ error: "Email does not exist." });
+  }
+
+  try {
+    await user.comparePassword(password);
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWTSECRET);
+    const responseUser = await User.findById(user._id).select("-password");
+
+    res.send({
+      token,
+      user: responseUser,
+    });
+  } catch (error) {
+    return res.status(422).send({ error: "Server Error" });
+  }
+};
