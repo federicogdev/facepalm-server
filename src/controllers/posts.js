@@ -4,6 +4,26 @@ const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const Post = mongoose.model("Post");
 
+exports.getPosts = async (req, res) => {
+  const page = req.query.page || 0;
+  const limit = req.query.limit || 0;
+
+  try {
+    const allPosts = await Post.find({
+      // approved: true,
+      // pending: false,
+    })
+      // .skip(page * limit)
+      // .limit(limit)
+      .populate("user", "username image")
+      .sort({ createdAt: -1 });
+
+    res.status(200).send({ allPosts });
+  } catch (error) {
+    return res.status(500).send({ error: "Server Error" });
+  }
+};
+
 exports.createPost = async (req, res) => {
   const { id } = req.user;
   const { text, title } = req.body;
