@@ -10,15 +10,15 @@ exports.getPosts = async (req, res) => {
 
   try {
     const allPosts = await Post.find({
-      // approved: true,
-      // pending: false,
+      approved: true,
+      pending: false,
     })
       // .skip(page * limit)
       // .limit(limit)
       .populate("user", "username image")
       .sort({ createdAt: -1 });
 
-    res.status(200).send(allPosts);
+    res.status(200).send({ data: allPosts });
   } catch (error) {
     return res.status(500).send({ error: "Server Error" });
   }
@@ -42,7 +42,7 @@ exports.getPostByID = async (req, res) => {
       return res.status(400).send({ error: "Post is pending approval" });
     }
 
-    res.send(post);
+    res.send({ data: post });
   } catch (error) {
     return res.status(500).send({ error: "Server Error" });
   }
@@ -69,7 +69,7 @@ exports.createPost = async (req, res) => {
 
     const post = await newPost.save();
 
-    res.send(post);
+    res.send({ data: post });
   } catch (error) {
     return res.status(500).send({ error: "Server Error" });
   }
@@ -106,6 +106,46 @@ exports.deletePost = async (req, res) => {
 
     await post.remove();
     res.status(200).send({ msg: "Post Deleted Successfully" });
+  } catch (error) {
+    return res.status(500).send({ error: "Server Error" });
+  }
+};
+
+exports.likePost = async (req, res) => {
+  const { id } = req.params;
+
+  const { id: userId } = req.user;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({ error: "ID not valid" });
+  }
+
+  try {
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).send({ error: "Post not found" });
+    }
+
+    if (post.pending) {
+      return res.status(400).send({ error: "Post is pending approval" });
+    }
+
+    if (post.likes.some((likesID) => likesID.toString() === userId)) {
+      return res.status(400).send({ error: "Post already liked" });
+    }
+
+    post.likes.unshift(userId);
+
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { likes: id } },
+      { new: true }
+    );
+
+    await post.save();
+
+    res.status(200).send({ data: post.likes });
   } catch (error) {
     return res.status(500).send({ error: "Server Error" });
   }
