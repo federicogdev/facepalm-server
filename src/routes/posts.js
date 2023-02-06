@@ -5,6 +5,7 @@ const {
   getPostByID,
   deletePost,
   likePost,
+  unlikePost,
 } = require("../controllers/posts");
 const { isAuth } = require("../middlewares/isAuth");
 const router = express.Router();
@@ -33,5 +34,10 @@ router.delete("/:id", isAuth, deletePost);
 //@desc       Likes a post by id
 //@@access    Private
 router.put("/:id/like", isAuth, likePost);
+
+//@route      PUT /api/v1/posts/:id/unlike
+//@desc       Unlikes a post by id
+//@@access    Private
+router.put("/:id/unlike", isAuth, unlikePost);
 
 module.exports = router;
