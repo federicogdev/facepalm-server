@@ -30,7 +30,7 @@ exports.register = async (req, res) => {
 
     await user.save();
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWTSECRET);
+    const token = jwt.sign({ userId: user._id }, "JWTSUPERSECRET");
     const responseUser = await User.findById(user._id).select("-password");
 
     res.send({
@@ -58,7 +58,7 @@ exports.login = async (req, res) => {
   try {
     await user.comparePassword(password);
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWTSECRET);
+    const token = jwt.sign({ userId: user._id }, "JWTSUPERSECRET");
     const responseUser = await User.findById(user._id).select("-password");
 
     res.send({
