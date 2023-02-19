@@ -20,11 +20,11 @@ exports.getUser = async (req, res) => {
   try {
     const user = await User.findById(id).select("-password");
 
-    const posts = await Post.find({ user: id })
-      .populate("user", "username image")
-      .sort({ createdAt: -1 });
+    // const posts = await Post.find({ user: id })
+    //   .populate("user", "username image")
+    //   .sort({ createdAt: -1 });
 
-    res.send({ user, posts });
+    res.send({ data: user });
   } catch (error) {
     return res.status(500).send({ error: "Server Error" });
   }
