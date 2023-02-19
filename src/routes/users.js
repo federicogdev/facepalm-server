@@ -8,4 +8,9 @@ const router = express.Router();
 //@@access    Private
 router.get("/", isAuth, getUsers);
 
+//@route      GET /api/v1/users/:id
+//@desc       Get a user
+//@@access    Private
+router.get("/:id", isAuth, getUser);
+
 module.exports = router;
