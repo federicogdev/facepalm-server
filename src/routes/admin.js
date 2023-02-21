@@ -7,12 +7,17 @@ const router = express.Router();
 
 //@route      GET /api/v1/admin/posts
 //@desc       Gets all unmoderated posts
-//@@access    Private
+//@access    Private
 router.get("/posts", [isAuth, isAdmin], getPendingPosts);
 
 //@route      PUT /api/v1/admin/posts/:id/approve
 //@desc       Approves a post
-//@@access    Private
+//@access    Private
 router.put("/posts/:id/approve", [isAuth, isAdmin], approvePost);
+
+//@route      PUT /api/v1/admin/posts/:id/reject
+//@desc       Approves a post
+//@access    Private
+router.put("/posts/:id/reject", [isAuth, isAdmin], rejectPost);
 
 module.exports = router;
