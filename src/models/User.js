@@ -12,7 +12,11 @@ const userSchema = new Schema({
   about: { type: String },
   admin: { type: Boolean, default: false },
   location: { type: String },
-  image: { type: String },
+  image: {
+    type: String,
+    default:
+      "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png",
+  },
   posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
   likes: [{ type: Schema.Types.ObjectId, ref: "Post" }],
   followers: [{ type: Schema.Types.ObjectId, ref: "User" }],

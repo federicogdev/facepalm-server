@@ -5,17 +5,12 @@ const User = mongoose.model("User");
 const Post = mongoose.model("Post");
 
 exports.getPosts = async (req, res) => {
-  const page = req.query.page || 0;
-  const limit = req.query.limit || 0;
-
   try {
     const allPosts = await Post.find({
       approved: true,
       pending: false,
     })
-      // .skip(page * limit)
-      // .limit(limit)
-      .populate("user", "username image")
+      .populate("user likes", "username image")
       .sort({ createdAt: -1 });
 
     res.status(200).send({ data: allPosts });
@@ -32,7 +27,10 @@ exports.getPostByID = async (req, res) => {
   }
 
   try {
-    const post = await Post.findById(id).populate("user", "username");
+    const post = await Post.findById(id).populate(
+      "user likes",
+      "username image"
+    );
 
     if (!post) {
       return res.status(404).send({ error: "Post not found" });
