@@ -53,7 +53,6 @@ The folder structure of this app is explained below:
 | **src/middlewares**      | Express middlewares which process the incoming requests before handling them down to the routes
 | **src/routes**           | Contain all express routes, separated by module/area of application
 | **src/models**           | Models define schemas that will be used in storing and retrieving data from Application database  |
-| **src/monitoring**       | Prometheus metrics |
 | **src**/index.js         | Entry point to express app                                                               |
 | package.json             | Contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped)   |
 
@@ -67,8 +66,8 @@ Npm scripts basically allow us to call (and chain) terminal commands via npm.
 
 | Npm Script | Description                                                                     |
 | ---------- | ------------------------------------------------------------------------------- |
-| `start`    | Runs full build and runs node on dist/index.js. Can be invoked with `npm start` |
-| `dev`      | Runs full build before starting all watch tasks. Can be invoked with `npm dev`  |
+| `start`    | Runs full build and runs node on dist/index.js. Can be invoked with `npm run start` |
+| `dev`      | Runs full build before starting all watch tasks. Can be invoked with `npm run dev`  |
 
 ### API Endpoints
 
