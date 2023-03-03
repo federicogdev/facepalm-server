@@ -33,4 +33,8 @@ app.use("/api/v1/posts", require("./src/routes/posts"));
 app.use("/api/v1/users", require("./src/routes/users"));
 app.use("/api/v1/admin", require("./src/routes/admin"));
 
+app.get("/ping", (req, res) => {
+  return res.status(200).send("Ping");
+});
+
 http.listen(PORT, () => console.log(`Listening on port ${PORT}`));
