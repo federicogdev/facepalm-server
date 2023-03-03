@@ -1,5 +1,9 @@
 const express = require("express");
-const { getPendingPosts, approvePost } = require("../controllers/admin");
+const {
+  getPendingPosts,
+  approvePost,
+  rejectPost,
+} = require("../controllers/admin");
 const { isAdmin } = require("../middlewares/isAdmin");
 const { isAuth } = require("../middlewares/isAuth");
 
